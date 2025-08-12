@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}My Favorite Talks{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0">My Favorite Talks</h1>
+  <a href="{% url 'accounts:favorite_talk_add' %}" class="btn btn-primary">Add Favorite Talk</a>
+</div>
+
+{% if talks %}
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Speaker</th>
+          <th scope="col">Presentation</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in talks %}
+          <tr>
+            <td>{{ t.title }}</td>
+            <td>{{ t.speaker }}</td>
+            <td><a href="{{ t.presentation_link }}" target="_blank" rel="noopener">View</a></td>
+            <td class="text-end">
+              <a href="{% url 'accounts:favorite_talk_edit' t.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="alert alert-info">No talks yet.</div>
+{% endif %}
+{% endblock %}

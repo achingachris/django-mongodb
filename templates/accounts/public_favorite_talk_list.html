@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>All Favorite Talks</title>
+</head>
+<body>
+  <h1>All Favorite Talks</h1>
+
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'accounts:favorite_talk_add' %}">Add Favorite Talk</a></p>
+  {% endif %}
+
+  {% if talks %}
+    <ul>
+      {% for t in talks %}
+        <li>
+          <strong>{{ t.title }}</strong> by {{ t.speaker }}
+          — <a href="{{ t.presentation_link }}" target="_blank" rel="noopener">Slides</a>
+          <br>
+          <small>Added by: {{ t.user.get_full_name|default:t.user.username }}</small>
+          {% if t.notes %}
+            <p>{{ t.notes }}</p>
+          {% endif %}
+
+          {% if user.is_authenticated and user == t.user %}
+            <a href="{% url 'accounts:favorite_talk_edit' t.pk %}">Edit</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No talks available.</p>
+  {% endif %}
+</body>
+</html>
